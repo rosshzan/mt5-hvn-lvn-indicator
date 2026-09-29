@@ -63,15 +63,15 @@ void DeleteByPrefix(string prefix)
    }
 }
 
-void DrawSignal(string signalType, int barIndex, double price, color col)
+void DrawSignal(string signalType, datetime timeValue, double price, color col)
 {
-   string dateText = TimeToString(Time[barIndex], TIME_DATE);
+   string dateText = TimeToString(timeValue, TIME_DATE);
    string objectName = StringFormat("%s%s_%s", g_prefix, dateText, signalType);
 
    if(ObjectFind(0, objectName) >= 0)
       ObjectDelete(0, objectName);
 
-   ObjectCreate(0, objectName, OBJ_TEXT, 0, Time[barIndex], price);
+   ObjectCreate(0, objectName, OBJ_TEXT, 0, timeValue, price);
    ObjectSetString(0, objectName, OBJPROP_TEXT, signalType);
    ObjectSetInteger(0, objectName, OBJPROP_COLOR, col);
    ObjectSetInteger(0, objectName, OBJPROP_FONTSIZE, 10);
@@ -141,10 +141,10 @@ int OnCalculate(const int rates_total,
       }
 
       if(ShowHVN)
-         DrawSignal("HVN", hvnIndex, high[hvnIndex], HVNColor);
+         DrawSignal("HVN", time[hvnIndex], high[hvnIndex], HVNColor);
 
       if(ShowLVN)
-         DrawSignal("LVN", lvnIndex, low[lvnIndex], LVNColor);
+         DrawSignal("LVN", time[lvnIndex], low[lvnIndex], LVNColor);
 
       i = dayEnd;
    }
